@@ -36,22 +36,23 @@ function onGalleryItemClick(event) {
 
   const activeElement = event.target;
   const bigImgUrl = activeElement.dataset.source;
-  
+
+
   if (activeElement.nodeName !== "IMG") {
     return;
   }
 
-
   const modal = basicLightbox.create(`<img src="${bigImgUrl}">`, {
+    onShow: (modal) => {
+       divToContainGallery.addEventListener("keydown",onPressEscape);
+    },
+    onClose: (modal) => {
+       divToContainGallery.removeEventListener("keydown",onPressEscape);
+    }   
   });
 
   modal.show()
-
-
-  if (modal.visible()) {
-    divToContainGallery.addEventListener("keydown", onPressEscape);
-  }
-
+  
     function onPressEscape ({code}) {
       if (code !== "Escape") {
         return
